@@ -1,6 +1,6 @@
 import httpx
 from httpx import RequestError, HTTPStatusError
-import asyncio
+
 class ApiUnavailableError(Exception):
     pass
 
@@ -17,6 +17,3 @@ class GovVisaService:
                 return details
         except (RequestError, HTTPStatusError) as e:
             raise ApiUnavailableError("External API is currently unavailable") from e
-
-data = asyncio.run(GovVisaService().get_country_slugs())
-breakpoint()
