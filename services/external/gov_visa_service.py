@@ -1,6 +1,6 @@
 import httpx
 from httpx import RequestError, HTTPStatusError
-
+import asyncio
 class ApiUnavailableError(Exception):
     pass
 
@@ -13,8 +13,10 @@ class GovVisaService:
                 response = await client.get(url)
                 response.raise_for_status()
                 data = response.json()
-                slugs = [child['details']['country']['slug'] for child in data['links']['children']]
-                return slugs
+                details = [{'slug': child['details']['country']['slug'], 'name': child['details']['country']['name']} for child in data['links']['children']]
+                return details
         except (RequestError, HTTPStatusError) as e:
             raise ApiUnavailableError("External API is currently unavailable") from e
 
+data = asyncio.run(GovVisaService().get_country_slugs())
+breakpoint()
