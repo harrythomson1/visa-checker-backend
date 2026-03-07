@@ -10,3 +10,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+@app.get("/health")
+def health():
+    return {"message": "Visa Checker API is Running"}
